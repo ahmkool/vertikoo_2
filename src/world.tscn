@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=3 uid="uid://dgry7qcu02ipg"]
+
+[ext_resource type="Script" uid="uid://xglkwtuu3x8f" path="res://src/world.gd" id="1_36ipd"]
+[ext_resource type="PackedScene" uid="uid://uly64v7aqt8i" path="res://src/platform.tscn" id="1_tp5op"]
+[ext_resource type="PackedScene" uid="uid://cwg6p43un0tpo" path="res://src/player.tscn" id="2_xlegt"]
+[ext_resource type="PackedScene" uid="uid://6j53tft5b0du" path="res://src/gravity_core.tscn" id="3_0qwtu"]
+
+[node name="World" type="Node3D"]
+script = ExtResource("1_36ipd")
+
+[node name="Platform" parent="." instance=ExtResource("1_tp5op")]
+transform = Transform3D(2.0517535, 0, 0, 0, 0.99999964, 0, 0, 0, 4.2517796, 0, 0, 0)
+
+[node name="Platform6" parent="." instance=ExtResource("1_tp5op")]
+transform = Transform3D(2.0517535, 0, 0, 0, 0.99999964, 0, 0, 0, 4.2517796, 0, 19.610918, 0)
+
+[node name="Platform3" parent="." instance=ExtResource("1_tp5op")]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -50.5007, 0, -6.948242)
+
+[node name="Platform4" parent="." instance=ExtResource("1_tp5op")]
+transform = Transform3D(2.0664954, 0, 0, 0, -4.371139e-08, -1.8412292, 0, 1, -8.0482685e-08, -0.105529785, 9.444409, -22.70815)
+
+[node name="Platform5" parent="." instance=ExtResource("1_tp5op")]
+transform = Transform3D(2.0664954, 0, 0, 0, -4.371139e-08, -1.8412292, 0, 1, -8.0482685e-08, -0.105529785, 9.444409, 22.384642)
+
+[node name="Platform2" parent="." instance=ExtResource("1_tp5op")]
+transform = Transform3D(1, 0, 0, 0, 0.99029964, 0.13894843, 0, -0.13894843, 0.99029964, -38.094074, 0.85731506, 0)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.5657157, 0.82460034, 0, -0.82460034, -0.5657157, 0, 22.771357, 0)
+shadow_enabled = true
+
+[node name="Player" parent="." instance=ExtResource("2_xlegt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+
+[node name="GravityCore" parent="." instance=ExtResource("3_0qwtu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.04141, 3.7089844, 0)

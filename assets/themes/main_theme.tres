@@ -1,0 +1,11 @@
+[gd_resource type="Theme" format=3 uid="uid://ddj7htpal6lvs"]
+
+[resource]
+Button/font_sizes/font_size = 30
+GridContainer/constants/h_separation = 10
+GridContainer/constants/v_separation = 10
+Label/font_sizes/font_size = 30
+MarginContainer/constants/margin_bottom = 20
+MarginContainer/constants/margin_left = 20
+MarginContainer/constants/margin_right = 20
+MarginContainer/constants/margin_top = 20

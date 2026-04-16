@@ -1,0 +1,75 @@
+class_name PlayerCharacter
+extends CharacterBody3D
+
+@onready var look_pivot: Node3D = $LookPivot
+@onready var animation_tree: AnimationTree = $AnimationTree
+@onready var _body_visual: Node3D = $Root
+
+## Higher = snappier turn toward move direction (camera-relative), similar to UE mannequin feel.
+@export var facing_rotation_strength := 10.0
+## Add PI/2 etc. if the mesh faces a different default axis than movement.
+@export var facing_yaw_offset := 0.0
+
+## Ground state BlendSpace1D: 0 = idle, 1 = run. Higher = faster blend toward target.
+@export var ground_locomotion_blend_speed := 10.0
+
+## Initial upward speed when leaving the ground (higher = taller jump).
+@export var jump_velocity := 9.0
+## Gravity multiplier while moving upward and jump is still held (apex control).
+@export var gravity_scale_rising := 1.15
+## Gravity multiplier while falling — higher = less float, snappier landings.
+@export var gravity_scale_falling := 2.65
+## Extra gravity while still moving up but jump is released (short hop / Mario-style cut).
+@export var gravity_scale_jump_cut := 3.2
+
+@onready var gravity_component: GravityComponent = $GravityComponent
+@onready var movement_component: MovementComponent = $MovementComponent
+
+
+func _physics_process(delta: float) -> void:
+	movement_component.align_to_gravity(delta)
+
+const _GROUND_BLEND_PARAM := &"parameters/Ground/blend_position"
+
+var _ground_locomotion_blend := 0.0
+
+## Smoothly yaw the mesh toward horizontal movement (world XZ), without rotating the camera rig.
+func smooth_rotate_toward_move_direction(direction: Vector3, delta: float) -> void:
+	var horiz := Vector3(direction.x, 0.0, direction.z)
+	if horiz.length_squared() < 0.0001:
+		return
+	horiz = horiz.normalized()
+	var target_y := atan2(horiz.x, horiz.z) + facing_yaw_offset
+	var w := 1.0 - exp(-facing_rotation_strength * delta)
+	_body_visual.rotation.y = lerp_angle(_body_visual.rotation.y, target_y, w)
+
+
+func set_ground_locomotion_blend_immediate(amount: float) -> void:
+	if animation_tree == null:
+		return
+	_ground_locomotion_blend = clampf(amount, 0.0, 1.0)
+	animation_tree.set(_GROUND_BLEND_PARAM, _ground_locomotion_blend)
+
+
+## Smooth 0–1 blend for the Ground state's BlendSpace1D (idle ↔ run).
+func update_ground_locomotion_blend(target: float, delta: float) -> void:
+	if animation_tree == null:
+		return
+	target = clampf(target, 0.0, 1.0)
+	_ground_locomotion_blend = move_toward(
+		_ground_locomotion_blend,
+		target,
+		ground_locomotion_blend_speed * delta
+	)
+	animation_tree.set(_GROUND_BLEND_PARAM, _ground_locomotion_blend)
+
+## Airborne gravity with asymmetric rise/fall and optional jump-cut when releasing jump early.
+func apply_air_gravity(delta: float) -> void:
+	var g := gravity_component.get_current_gravity()
+	var mult: float
+	var velocity_along_gravity: float = velocity.dot(g)
+	if velocity_along_gravity <= 0.0:
+		mult = gravity_scale_falling
+	else:
+		mult = gravity_scale_rising
+	velocity += g * mult * delta
