@@ -35,13 +35,30 @@ var _ground_locomotion_blend := 0.0
 
 ## Smoothly yaw the mesh toward horizontal movement (world XZ), without rotating the camera rig.
 func smooth_rotate_toward_move_direction(direction: Vector3, delta: float) -> void:
-	var horiz := Vector3(direction.x, 0.0, direction.z)
-	if horiz.length_squared() < 0.0001:
+	# Gravity defines "up" in your current world orientation.
+	var g := gravity_component.get_current_gravity()
+	if g.length_squared() < 0.000001:
 		return
-	horiz = horiz.normalized()
-	var target_y := atan2(horiz.x, horiz.z) + facing_yaw_offset
+	var up := -g.normalized()
+
+	# Keep only movement on the plane perpendicular to gravity.
+	var move_on_plane := direction - up * direction.dot(up)
+	if move_on_plane.length_squared() < 0.0001:
+		return
+	move_on_plane = move_on_plane.normalized()
+
+	# Build a target basis where -Z looks along movement direction.
+	var target_forward := move_on_plane
+	var target_right := up.cross(target_forward).normalized()
+	if target_right.length_squared() < 0.0001:
+		return
+	target_forward = up.cross(target_right).normalized()
+
+	var target_basis := Basis(target_right, up, -target_forward).orthonormalized()
+
+	# Smoothly rotate visual toward target basis.
 	var w := 1.0 - exp(-facing_rotation_strength * delta)
-	_body_visual.rotation.y = lerp_angle(_body_visual.rotation.y, target_y, w)
+	_body_visual.global_transform.basis = _body_visual.global_transform.basis.slerp(target_basis, w).orthonormalized()
 
 
 func set_ground_locomotion_blend_immediate(amount: float) -> void:

@@ -1,9 +1,20 @@
-[gd_scene load_steps=5 format=3 uid="uid://dgry7qcu02ipg"]
+[gd_scene load_steps=9 format=3 uid="uid://dgry7qcu02ipg"]
 
 [ext_resource type="Script" uid="uid://xglkwtuu3x8f" path="res://src/world.gd" id="1_36ipd"]
 [ext_resource type="PackedScene" uid="uid://uly64v7aqt8i" path="res://src/platform.tscn" id="1_tp5op"]
 [ext_resource type="PackedScene" uid="uid://cwg6p43un0tpo" path="res://src/player.tscn" id="2_xlegt"]
 [ext_resource type="PackedScene" uid="uid://6j53tft5b0du" path="res://src/gravity_core.tscn" id="3_0qwtu"]
+[ext_resource type="Texture2D" uid="uid://chj3qn7lpf02" path="res://assets/material/sky/panorama_image.png" id="5_36ipd"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_usxdn"]
+panorama = ExtResource("5_36ipd")
+
+[sub_resource type="Sky" id="Sky_jvefd"]
+sky_material = SubResource("PanoramaSkyMaterial_usxdn")
+
+[sub_resource type="Environment" id="Environment_t101k"]
+background_mode = 2
+sky = SubResource("Sky_jvefd")
 
 [node name="World" type="Node3D"]
 script = ExtResource("1_36ipd")
@@ -35,3 +46,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
 
 [node name="GravityCore" parent="." instance=ExtResource("3_0qwtu")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.04141, 3.7089844, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_t101k")
