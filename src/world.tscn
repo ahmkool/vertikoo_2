@@ -8,38 +8,63 @@
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_usxdn"]
 panorama = ExtResource("5_36ipd")
+energy_multiplier = 1.12
 
 [sub_resource type="Sky" id="Sky_jvefd"]
 sky_material = SubResource("PanoramaSkyMaterial_usxdn")
 
 [sub_resource type="Environment" id="Environment_t101k"]
 background_mode = 2
+background_energy_multiplier = 0.88
 sky = SubResource("Sky_jvefd")
+ambient_light_source = 3
+ambient_light_sky_contribution = 0.96
+ambient_light_energy = 0.78
+tonemap_mode = 3
+ssao_enabled = true
+ssao_radius = 1.15
+ssao_intensity = 1.05
+ssao_power = 1.25
+ssao_light_affect = 0.58
 
 [node name="World" type="Node3D"]
 script = ExtResource("1_36ipd")
 
 [node name="Platform" parent="." instance=ExtResource("1_tp5op")]
-transform = Transform3D(2.0517535, 0, 0, 0, 0.99999964, 0, 0, 0, 4.2517796, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2903423, 0, 0)
 
 [node name="Platform6" parent="." instance=ExtResource("1_tp5op")]
-transform = Transform3D(2.0517535, 0, 0, 0, 0.99999964, 0, 0, 0, 4.2517796, 0, 19.610918, 0)
+transform = Transform3D(0.61093307, 0, -0.79168224, 0, 1, 0, 0.79168224, 0, 0.61093307, -5.7655344, 0, 0)
+
+[node name="Platform7" parent="." instance=ExtResource("1_tp5op")]
+transform = Transform3D(0.90379894, 0, -0.42795736, 0, 1, 0, 0.42795736, 0, 0.90379894, -13.090455, 1.1675873, -1.0946198)
 
 [node name="Platform3" parent="." instance=ExtResource("1_tp5op")]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -50.5007, 0, -6.948242)
 
 [node name="Platform4" parent="." instance=ExtResource("1_tp5op")]
-transform = Transform3D(2.0664954, 0, 0, 0, -4.371139e-08, -1.8412292, 0, 1, -8.0482685e-08, -0.105529785, 9.444409, -22.70815)
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -0.105529785, 9.444409, -22.70815)
 
 [node name="Platform5" parent="." instance=ExtResource("1_tp5op")]
-transform = Transform3D(2.0664954, 0, 0, 0, -4.371139e-08, -1.8412292, 0, 1, -8.0482685e-08, -0.105529785, 9.444409, 22.384642)
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -0.105529785, 9.444409, 22.384642)
 
 [node name="Platform2" parent="." instance=ExtResource("1_tp5op")]
 transform = Transform3D(1, 0, 0, 0, 0.99029964, 0.13894843, 0, -0.13894843, 0.99029964, -38.094074, 0.85731506, 0)
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+[node name="Sun" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -0.5657157, 0.82460034, 0, -0.82460034, -0.5657157, 0, 22.771357, 0)
+light_color = Color(1, 0.96, 0.9, 1)
+light_energy = 0.8
+light_angular_distance = 0.4
 shadow_enabled = true
+shadow_opacity = 0.82
+directional_shadow_blend_splits = true
+directional_shadow_max_distance = 85.0
+
+[node name="Fill" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.46947157, -0.46789095, 0.74878204, 0, 0.8480481, 0.52991927, -0.8829476, 0.24878202, -0.39813447, 0, 18, 0)
+light_color = Color(0.62, 0.72, 0.98, 1)
+light_energy = 0.42
 
 [node name="Player" parent="." instance=ExtResource("2_xlegt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)

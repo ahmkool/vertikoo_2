@@ -27,11 +27,11 @@ func align_to_gravity(delta: float) -> void:
 		forward_on_plane = frame["forward"]
 	var target_right = forward_on_plane.cross(target_up).normalized()
 	var arrow_length = 2.0
-	DebugDraw3D.draw_arrow(player.global_position, player.global_position + target_right * arrow_length, Color.RED, 0.2)
+	#DebugDraw3D.draw_arrow(player.global_position, player.global_position + target_right * arrow_length, Color.RED, 0.2)
 	var target_forward = target_up.cross(target_right).normalized()
-	DebugDraw3D.draw_arrow(player.global_position, player.global_position + target_forward * arrow_length, Color.GREEN, 0.2)
+	#DebugDraw3D.draw_arrow(player.global_position, player.global_position + target_forward * arrow_length, Color.GREEN, 0.2)
 	var target_basis = Basis(target_right, target_up, -target_forward).orthonormalized()
 	player.global_transform.basis = target_basis.orthonormalized()
 	# Still required for CharacterBody floor logic.
 	player.up_direction = target_up
-	DebugDraw3D.draw_arrow(player.global_position, player.global_position + player.up_direction * arrow_length, Color.BLUE, 0.2)
+	#DebugDraw3D.draw_arrow(player.global_position, player.global_position + player.up_direction * arrow_length, Color.BLUE, 0.2)

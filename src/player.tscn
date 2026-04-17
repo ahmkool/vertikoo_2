@@ -7747,6 +7747,7 @@ shape = SubResource("CapsuleShape3D_ehvfd")
 [node name="GravityComponent" parent="." instance=ExtResource("8_nrj4s")]
 
 [node name="GravityDebugger" type="CanvasLayer" parent="GravityComponent" node_paths=PackedStringArray("gravity_component")]
+visible = false
 script = ExtResource("9_ndfpv")
 gravity_component = NodePath("..")
 
