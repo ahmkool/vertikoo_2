@@ -1,50 +1,18 @@
 [gd_scene load_steps=7 format=3 uid="uid://6j53tft5b0du"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_core"]
-albedo_color = Color(0.22, 0.38, 0.72, 1)
-roughness = 0.35
-metallic = 0.65
-emission_enabled = true
-emission = Color(0.15, 0.45, 0.95, 1)
-emission_energy_multiplier = 1.35
-
-[sub_resource type="BoxMesh" id="BoxMesh_cipku"]
-material = SubResource("StandardMaterial3D_core")
+[ext_resource type="Script" uid="uid://cy0u3p1u82sku" path="res://src/gravity/core/gravity_core.gd" id="1_flj7h"]
+[ext_resource type="PackedScene" uid="uid://vshm7k0sh8qw" path="res://assets/gravity/core/core.tscn" id="1_x4ja3"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_cipku"]
 radius = 4.0
+
+[sub_resource type="Animation" id="Animation_x4ja3"]
+length = 0.001
 
 [sub_resource type="Animation" id="Animation_cipku"]
 resource_name = "rotation"
 length = 10.0
 loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("MeshInstance3D:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 10),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(0, 0, 0), Vector3(0, 0, 6.2831855)]
-}
-
-[sub_resource type="Animation" id="Animation_x4ja3"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("MeshInstance3D:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, 0, 0)]
-}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_flj7h"]
 _data = {
@@ -53,9 +21,7 @@ _data = {
 }
 
 [node name="GravityCore" type="Node3D"]
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = SubResource("BoxMesh_cipku")
+script = ExtResource("1_flj7h")
 
 [node name="Area3D" type="Area3D" parent="."]
 
@@ -67,3 +33,8 @@ libraries = {
 &"": SubResource("AnimationLibrary_flj7h")
 }
 autoplay = "rotation"
+
+[node name="core" parent="." instance=ExtResource("1_x4ja3")]
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]

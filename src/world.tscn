@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://dgry7qcu02ipg"]
+[gd_scene load_steps=12 format=3 uid="uid://dgry7qcu02ipg"]
 
 [ext_resource type="Script" uid="uid://xglkwtuu3x8f" path="res://src/world.gd" id="1_36ipd"]
 [ext_resource type="PackedScene" uid="uid://uly64v7aqt8i" path="res://src/platform.tscn" id="1_tp5op"]
 [ext_resource type="PackedScene" uid="uid://cwg6p43un0tpo" path="res://src/player.tscn" id="2_xlegt"]
 [ext_resource type="PackedScene" uid="uid://6j53tft5b0du" path="res://src/gravity_core.tscn" id="3_0qwtu"]
 [ext_resource type="Texture2D" uid="uid://chj3qn7lpf02" path="res://assets/material/sky/panorama_image.png" id="5_36ipd"]
+[ext_resource type="Script" uid="uid://dxgdwftkvcpf6" path="res://src/gravity/core/gravity_shift_step.gd" id="6_usxdn"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_usxdn"]
 panorama = ExtResource("5_36ipd")
@@ -27,6 +28,16 @@ ssao_intensity = 1.05
 ssao_power = 1.25
 ssao_light_affect = 0.58
 
+[sub_resource type="Resource" id="Resource_usxdn"]
+script = ExtResource("6_usxdn")
+angle_deg = 180.0
+metadata/_custom_type_script = "uid://dxgdwftkvcpf6"
+
+[sub_resource type="Resource" id="Resource_jvefd"]
+script = ExtResource("6_usxdn")
+angle_deg = 180.0
+metadata/_custom_type_script = "uid://dxgdwftkvcpf6"
+
 [node name="World" type="Node3D"]
 script = ExtResource("1_36ipd")
 
@@ -37,7 +48,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2903423, 0, 0)
 transform = Transform3D(0.61093307, 0, -0.79168224, 0, 1, 0, 0.79168224, 0, 0.61093307, -5.7655344, 0, 0)
 
 [node name="Platform7" parent="." instance=ExtResource("1_tp5op")]
-transform = Transform3D(0.90379894, 0, -0.42795736, 0, 1, 0, 0.42795736, 0, 0.90379894, -13.090455, 1.1675873, -1.0946198)
+transform = Transform3D(0.90379894, 0, -0.42795736, 0, 1, 0, 0.42795736, 0, 0.90379894, -14.033291, 1.1675873, -1.0946198)
+
+[node name="Platform8" parent="." instance=ExtResource("1_tp5op")]
+transform = Transform3D(-0.75179374, -3.473097e-08, -0.6593983, 7.9012615e-08, -1, -3.741322e-08, -0.6593983, -8.022781e-08, 0.75179374, -12.609892, 20.982574, -0.06057644)
+
+[node name="Platform10" parent="." instance=ExtResource("1_tp5op")]
+transform = Transform3D(-0.75179374, -3.473097e-08, -0.6593983, 7.9012615e-08, -1, -3.741322e-08, -0.6593983, -8.022781e-08, 0.75179374, -33.786297, 20.92364, -0.06057644)
+
+[node name="Platform9" parent="." instance=ExtResource("1_tp5op")]
+transform = Transform3D(-1.0999913, -1.6625711e-07, 0.004358015, 1.6609539e-07, -1.1, -4.1154557e-08, 0.004358015, -4.049619e-08, 1.0999913, -22.078373, 20.982574, -0.06057644)
 
 [node name="Platform3" parent="." instance=ExtResource("1_tp5op")]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, -50.5007, 0, -6.948242)
@@ -69,8 +89,15 @@ light_energy = 0.42
 [node name="Player" parent="." instance=ExtResource("2_xlegt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
 
-[node name="GravityCore" parent="." instance=ExtResource("3_0qwtu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -37.04141, 3.7089844, 0)
-
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_t101k")
+
+[node name="GravityCores" type="Node" parent="."]
+
+[node name="GravityCore" parent="GravityCores" instance=ExtResource("3_0qwtu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.441081, 5.216717, 0.64810944)
+shifts = Array[ExtResource("6_usxdn")]([SubResource("Resource_usxdn")])
+
+[node name="GravityCore2" parent="GravityCores" instance=ExtResource("3_0qwtu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -35.913998, 18.692612, 0.64810944)
+shifts = Array[ExtResource("6_usxdn")]([SubResource("Resource_jvefd")])

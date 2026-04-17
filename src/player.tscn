@@ -1,4 +1,4 @@
-[gd_scene load_steps=56 format=4 uid="uid://cwg6p43un0tpo"]
+[gd_scene load_steps=58 format=4 uid="uid://cwg6p43un0tpo"]
 
 [ext_resource type="Script" uid="uid://cfv1ci7hyohj4" path="res://src/player.gd" id="1_lowyb"]
 [ext_resource type="Script" uid="uid://60y50fq6weww" path="res://src/states/state_machine.gd" id="2_sm"]
@@ -12,6 +12,8 @@
 [ext_resource type="Theme" uid="uid://ddj7htpal6lvs" path="res://assets/themes/main_theme.tres" id="9_hclnh"]
 [ext_resource type="Script" uid="uid://dfjdlb2ru1352" path="res://src/debug/gravity_debugger.gd" id="9_ndfpv"]
 [ext_resource type="Script" uid="uid://ca1spk1k41xgu" path="res://src/movement_component.gd" id="9_rclot"]
+[ext_resource type="Script" uid="uid://dc1g3xv5x4sb7" path="res://src/gravity/core/gravity_core_handler.gd" id="12_nic3v"]
+[ext_resource type="Script" uid="uid://cnlfxsmp25svh" path="res://src/player_ui.gd" id="13_player_ui"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ndfpv"]
 render_priority = 0
@@ -7288,6 +7290,7 @@ height = 3.298584
 
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_lowyb")
+jump_velocity = 15.0
 
 [node name="StateMachine" type="Node" parent="."]
 script = ExtResource("2_sm")
@@ -7834,11 +7837,38 @@ visible = false
 layout_mode = 2
 text = "Gravity: ()"
 
+[node name="GravityCoreHandler" type="Node" parent="GravityComponent"]
+script = ExtResource("12_nic3v")
+
 [node name="MovementComponent" type="Node" parent="." node_paths=PackedStringArray("gravity_component")]
 script = ExtResource("9_rclot")
 gravity_component = NodePath("../GravityComponent")
 
-[node name="Node" type="Node" parent="."]
+[node name="PlayerUI" type="CanvasLayer" parent="."]
+script = ExtResource("13_player_ui")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Node"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.0826983, 0)
+[node name="InfoMessage" type="MarginContainer" parent="PlayerUI"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -40.5
+offset_top = -80.0
+offset_right = 40.5
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_vertical = 8
+theme = ExtResource("9_hclnh")
+
+[node name="PanelContainer" type="PanelContainer" parent="PlayerUI/InfoMessage"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="PlayerUI/InfoMessage/PanelContainer"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="PlayerUI/InfoMessage/PanelContainer/MarginContainer"]
+layout_mode = 2
+text = "Press shift to change gravity"
+fit_content = true
+autowrap_mode = 0

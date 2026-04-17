@@ -1,11 +1,22 @@
 extends PlayerState
 
+const FALL_TRANSITION_GRACE := 0.3
+var _off_floor_time := 0.0
+
+
+func enter() -> void:
+	_off_floor_time = 0.0
+
 
 func physics_update(delta: float) -> StringName:
 	if not player.is_on_floor():
+		_off_floor_time += delta
 		player.apply_air_gravity(delta)
 		player.move_and_slide()
-		return &"Fall"
+		if _off_floor_time >= FALL_TRANSITION_GRACE:
+			return &"Fall"
+		return &""
+	_off_floor_time = 0.0
 
 	if Input.is_action_just_pressed("ui_accept"):
 		return &"Jump"

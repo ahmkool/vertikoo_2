@@ -14,7 +14,7 @@ extends CharacterBody3D
 @export var ground_locomotion_blend_speed := 10.0
 
 ## Initial upward speed when leaving the ground (higher = taller jump).
-@export var jump_velocity := 9.0
+@export var jump_velocity := 11.0
 ## Gravity multiplier while moving upward and jump is still held (apex control).
 @export var gravity_scale_rising := 1.15
 ## Gravity multiplier while falling — higher = less float, snappier landings.
@@ -85,8 +85,13 @@ func apply_air_gravity(delta: float) -> void:
 	var g := gravity_component.get_current_gravity()
 	var mult: float
 	var velocity_along_gravity: float = velocity.dot(g)
-	if velocity_along_gravity <= 0.0:
+	# Positive along gravity = moving downward (falling). Negative = moving upward (rising).
+	if velocity_along_gravity >= 0.0:
 		mult = gravity_scale_falling
 	else:
-		mult = gravity_scale_rising
+		# While moving upward, releasing jump applies stronger gravity for short hops.
+		if Input.is_action_pressed("ui_accept"):
+			mult = gravity_scale_rising
+		else:
+			mult = gravity_scale_jump_cut
 	velocity += g * mult * delta
